@@ -58,6 +58,7 @@ class MonitoringClientSensorContao extends \Backend
   public function readData($arrData)
   {
     $arrData['contao.version'] = PackageUtil::getContaoVersion();
+    $arrData['contao.manager'] = PackageUtil::getVersion('contao/manager-bundle');
     $arrData['contao.maintenanceMode'] = \Config::get('maintenanceMode') ? 'true' : 'false';
     
     return $arrData;
