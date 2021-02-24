@@ -2,7 +2,7 @@
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2017 Leo Feyer
+ * Copyright (C) 2005-2021 Leo Feyer
  *
  * Formerly known as TYPOlight Open Source CMS.
  *
@@ -21,7 +21,7 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Cliff Parnitzky 2017-2017
+ * @copyright  Cliff Parnitzky 2017-2021
  * @author     Cliff Parnitzky
  * @package    MonitoringClientSensorContao
  * @license    LGPL
@@ -32,11 +32,13 @@
  */
 namespace Monitoring;
 
+use Contao\CoreBundle\Util\PackageUtil;
+
 /**
  * Class MonitoringClientSensorContao
  *
  * Special sensor for the MonitoringClient to read the Contao data.
- * @copyright  Cliff Parnitzky 2017-2017
+ * @copyright  Cliff Parnitzky 2017-2021
  * @author     Cliff Parnitzky
  * @package    Controller
  */
@@ -55,7 +57,7 @@ class MonitoringClientSensorContao extends \Backend
    */
   public function readData($arrData)
   {
-    $arrData['contao.version'] = VERSION . '.' . BUILD;
+    $arrData['contao.version'] = PackageUtil::getContaoVersion();
     $arrData['contao.maintenanceMode'] = \Config::get('maintenanceMode') ? 'true' : 'false';
     
     return $arrData;
