@@ -33,6 +33,7 @@
 namespace Monitoring;
 
 use Contao\CoreBundle\ContaoCoreBundle;
+use Contao\CoreBundle\Util\PackageUtil;
 
 /**
  * Class MonitoringClientSensorContao
@@ -57,7 +58,14 @@ class MonitoringClientSensorContao extends \Backend
    */
   public function readData($arrData)
   {
-    $arrData['contao.version'] = ContaoCoreBundle::getVersion();
+    if (method_exists(new ContaoCoreBundle(), "getVersion"))
+    {
+      $arrData['contao.version'] = ContaoCoreBundle::getVersion();
+    }
+    else
+    {
+      $arrData['contao.version'] = PackageUtil::getContaoVersion();
+    }
     $arrData['contao.maintenanceMode'] = \Config::get('maintenanceMode') ? 'true' : 'false';
     $arrData['contao.bundles'] = array_keys(\System::getContainer()->getParameter('kernel.bundles'));
     
