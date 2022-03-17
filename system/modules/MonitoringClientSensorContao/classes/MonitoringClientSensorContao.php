@@ -2,7 +2,7 @@
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2021 Leo Feyer
+ * Copyright (C) 2005-2022 Leo Feyer
  *
  * Formerly known as TYPOlight Open Source CMS.
  *
@@ -21,7 +21,7 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Cliff Parnitzky 2017-2021
+ * @copyright  Cliff Parnitzky 2017-2022
  * @author     Cliff Parnitzky
  * @package    MonitoringClientSensorContao
  * @license    LGPL
@@ -38,7 +38,7 @@ use Contao\CoreBundle\Util\PackageUtil;
  * Class MonitoringClientSensorContao
  *
  * Special sensor for the MonitoringClient to read the Contao data.
- * @copyright  Cliff Parnitzky 2017-2021
+ * @copyright  Cliff Parnitzky 2017-2022
  * @author     Cliff Parnitzky
  * @package    Controller
  */
@@ -57,8 +57,13 @@ class MonitoringClientSensorContao extends \Backend
    */
   public function readData($arrData)
   {
-    $arrData['contao.version'] = PackageUtil::getContaoVersion();
+    $arrData['contao.version'] = ContaoCoreBundle::getVersion();
     $arrData['contao.maintenanceMode'] = \Config::get('maintenanceMode') ? 'true' : 'false';
+    $arrData['contao.bundles'] = array_keys(\System::getContainer()->getParameter('kernel.bundles'));
+    
+    $managerConfig = json_decode(file_get_contents(\System::getContainer()->getParameter('kernel.project_dir'). "/contao-manager/manager.json"), true, 512, JSON_THROW_ON_ERROR);
+    $arrData['contao_manager.version'] = $managerConfig['latest_version'];
+    $arrData['contao_manager.updated'] = strtotime($managerConfig['last_update']);
     
     return $arrData;
   }
