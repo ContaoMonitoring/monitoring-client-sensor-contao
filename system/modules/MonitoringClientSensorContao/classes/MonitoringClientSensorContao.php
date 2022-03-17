@@ -32,7 +32,7 @@
  */
 namespace Monitoring;
 
-use Contao\CoreBundle\Util\PackageUtil;
+use Contao\CoreBundle\ContaoCoreBundle;
 
 /**
  * Class MonitoringClientSensorContao
