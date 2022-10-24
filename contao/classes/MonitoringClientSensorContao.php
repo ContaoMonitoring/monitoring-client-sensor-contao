@@ -30,8 +30,12 @@
 /**
  * Run in a custom namespace, so the class can be replaced
  */
-namespace Monitoring;
 
+namespace ContaoMonitoring\ContaoMonitoringClientSensorContao\Classes;
+
+use Contao\Backend;
+use Contao\Config;
+use Contao\System;
 use Contao\CoreBundle\ContaoCoreBundle;
 use Contao\CoreBundle\Util\PackageUtil;
 
@@ -43,7 +47,7 @@ use Contao\CoreBundle\Util\PackageUtil;
  * @author     Cliff Parnitzky
  * @package    Controller
  */
-class MonitoringClientSensorContao extends \Backend
+class MonitoringClientSensorContao extends Backend
 {
   /**
    * Constructor
@@ -66,15 +70,13 @@ class MonitoringClientSensorContao extends \Backend
     {
       $arrData['contao.version'] = PackageUtil::getContaoVersion();
     }
-    $arrData['contao.maintenanceMode'] = \Config::get('maintenanceMode') ? 'true' : 'false';
-    $arrData['contao.bundles'] = array_keys(\System::getContainer()->getParameter('kernel.bundles'));
-    
-    $managerConfig = json_decode(file_get_contents(\System::getContainer()->getParameter('kernel.project_dir'). "/contao-manager/manager.json"), true, 512, JSON_THROW_ON_ERROR);
+    $arrData['contao.maintenanceMode'] = Config::get('maintenanceMode') ? 'true' : 'false';
+    $arrData['contao.bundles'] = array_keys(System::getContainer()->getParameter('kernel.bundles'));
+
+    $managerConfig = json_decode(file_get_contents(System::getContainer()->getParameter('kernel.project_dir') . "/contao-manager/manager.json"), true, 512, JSON_THROW_ON_ERROR);
     $arrData['contao_manager.version'] = $managerConfig['latest_version'];
     $arrData['contao_manager.updated'] = strtotime($managerConfig['last_update']);
-    
+
     return $arrData;
   }
 }
-
-?>
